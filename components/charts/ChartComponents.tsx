@@ -44,9 +44,11 @@ export function TrustScoreChart({ score }: { score: number }) {
   );
 }
 
-export function CredentialDistributionChart(
-  data: Array<{ name: string; value: number }>
-) {
+export function CredentialDistributionChart({
+  data,
+}: {
+  data: Array<{ name: string; value: number }>;
+}) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <PieChart>
@@ -73,9 +75,11 @@ export function CredentialDistributionChart(
   );
 }
 
-export function NetworkActivityChart(
-  data: Array<{ time: string; scans: number }>
-) {
+export function NetworkActivityChart({
+  data,
+}: {
+  data: Array<{ time: string; scans: number }>;
+}) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data}>
@@ -89,9 +93,11 @@ export function NetworkActivityChart(
   );
 }
 
-export function TrustScoreDistributionChart(
-  data: Array<{ range: string; count: number }>
-) {
+export function TrustScoreDistributionChart({
+  data,
+}: {
+  data: Array<{ range: string; count: number }>;
+}) {
   return (
     <ResponsiveContainer width="100%" height={300}>
       <BarChart data={data}>

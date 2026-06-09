@@ -13,6 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { mockNetworkStats, mockAgents, mockScanResults } from '@/lib/mock-data';
 import { ScanResult } from '@/lib/types';
+import { TrustScoreChart } from '@/components/charts/ChartComponents';
 
 const presets = [
   { label: 'Web3 Trading Bot', icon: '🤖' },
@@ -227,6 +228,12 @@ export default function ScannerPage() {
                     </div>
                   ))}
                 </div>
+              </div>
+
+              {/* Trust Score Chart */}
+              <div className="bg-muted/50 rounded-lg p-6">
+                <h4 className="font-medium mb-4">Trust Score Visualization</h4>
+                <TrustScoreChart score={scanResult.trustScore} />
               </div>
 
               {/* Summary */}

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { mockGovernanceProposals } from '@/lib/mock-data';
+import { VotingChart } from '@/components/charts/ChartComponents';
 
 export default function GovernancePage() {
   const getStatusColor = (status: string) => {
@@ -72,7 +73,7 @@ export default function GovernancePage() {
 
                   {/* Voting Info */}
                   <div className="bg-muted/50 rounded-lg p-4">
-                    <div className="mb-3">
+                    <div className="mb-4">
                       <div className="flex justify-between mb-2">
                         <span className="text-sm font-medium">
                           Votes: {totalVotes.toLocaleString()}
@@ -81,13 +82,7 @@ export default function GovernancePage() {
                           {forPercentage}% in favor
                         </span>
                       </div>
-                      <div className="w-full bg-background rounded-full h-2 flex overflow-hidden">
-                        <div
-                          className="bg-green-600 h-2"
-                          style={{ width: `${forPercentage}%` }}
-                        ></div>
-                        <div className="bg-red-600 h-2 flex-1"></div>
-                      </div>
+                      <VotingChart votesFor={proposal.votesFor} votesAgainst={proposal.votesAgainst} />
                     </div>
 
                     <div className="flex gap-4 text-sm">

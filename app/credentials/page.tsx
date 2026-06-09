@@ -5,6 +5,7 @@ import { Award, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { mockCredentials, mockNetworkStats } from '@/lib/mock-data';
+import { CredentialDistributionChart } from '@/components/charts/ChartComponents';
 
 export default function CredentialsPage() {
   const getCredentialColor = (type: string) => {
@@ -181,8 +182,8 @@ export default function CredentialsPage() {
             <CardTitle>By Credential Type</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              {[
+            <CredentialDistributionChart
+              data={[
                 'security-audit',
                 'iso-certification',
                 'eu-ai-act',
@@ -191,29 +192,15 @@ export default function CredentialsPage() {
                 const count = mockCredentials.filter(
                   (c) => c.credentialType === type
                 ).length;
-                const percentage = Math.round(
-                  (count / mockCredentials.length) * 100
-                );
-                return (
-                  <div key={type}>
-                    <div className="flex items-center justify-between mb-2">
-                      <label className="text-sm font-medium">
-                        {getCredentialLabel(type)}
-                      </label>
-                      <span className="text-sm text-muted-foreground">
-                        {count} ({percentage}%)
-                      </span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <div
-                        className="bg-primary h-2 rounded-full"
-                        style={{ width: `${percentage}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                );
+                return {
+                  name: type
+                    .split('-')
+                    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+                    .join(' '),
+                  value: count,
+                };
               })}
-            </div>
+            />
           </CardContent>
         </Card>
 
