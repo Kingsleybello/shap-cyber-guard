@@ -169,3 +169,46 @@ export const mockNetworkStats: NetworkStats = {
   securityIncidentsReported24h: 2,
   protocolStatus: 'healthy',
 };
+
+export const mockAuditEvents = [
+  {
+    id: 'audit-001',
+    agentId: 'agent-001',
+    eventType: 'credential-issued' as const,
+    severity: 'info' as const,
+    description: 'Security audit credential issued by OpenZeppelin',
+    timestamp: new Date(Date.now() - 3600000),
+  },
+  {
+    id: 'audit-002',
+    agentId: 'agent-001',
+    eventType: 'scan-completed' as const,
+    severity: 'info' as const,
+    description: 'Routine security scan completed - all checks passed',
+    timestamp: new Date(Date.now() - 7200000),
+  },
+  {
+    id: 'audit-003',
+    agentId: 'agent-005',
+    eventType: 'compliance-verified' as const,
+    severity: 'info' as const,
+    description: 'EU AI Act compliance verified and certified',
+    timestamp: new Date(Date.now() - 86400000),
+  },
+  {
+    id: 'audit-004',
+    agentId: 'agent-004',
+    eventType: 'trust-score-updated' as const,
+    severity: 'warning' as const,
+    description: 'Trust score decreased due to inactivity',
+    timestamp: new Date(Date.now() - 172800000),
+  },
+  {
+    id: 'audit-005',
+    agentId: 'agent-002',
+    eventType: 'scan-completed' as const,
+    severity: 'info' as const,
+    description: 'Routine security scan completed - minor recommendations',
+    timestamp: new Date(Date.now() - 259200000),
+  },
+];
