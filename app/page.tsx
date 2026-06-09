@@ -1,37 +1,245 @@
-export default function Page() {
-  return (
-    <main className="flex min-h-screen items-center justify-center bg-black px-6 text-neutral-400">
-      <div className="flex w-full max-w-md flex-col items-start gap-8">
-        <svg
-          fill="currentColor"
-          viewBox="0 0 147 70"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-          className="size-10 text-white"
-        >
-          <path d="M56 50.2031V14H70V60.1562C70 65.5928 65.5928 70 60.1562 70C57.5605 70 54.9982 68.9992 53.1562 67.1573L0 14H19.7969L56 50.2031Z" />
-          <path d="M147 56H133V23.9531L100.953 56H133V70H96.6875C85.8144 70 77 61.1856 77 50.3125V14H91V46.1562L123.156 14H91V0H127.312C138.186 0 147 8.81439 147 19.6875V56Z" />
-        </svg>
+'use client';
 
-        <div className="space-y-3">
-          <h1 className="text-balance text-2xl font-semibold tracking-tight text-white">
-            To get started, describe what you want to build.
-          </h1>
-          <p className="text-pretty text-sm leading-relaxed text-neutral-500">
-            This is the default page for a fresh v0 project. Open the prompt and
-            tell v0 what to create, or browse the{' '}
-            <a
-              href="https://v0.app/templates"
-              target="_blank"
-              rel="noreferrer"
-              className="text-neutral-300 underline underline-offset-4 hover:text-white"
-            >
-              Community
-            </a>{' '}
-            for inspiration.
-          </p>
-        </div>
+import React, { useState } from 'react';
+import {
+  Shield,
+  TrendingUp,
+  CheckCircle2,
+  AlertCircle,
+  Activity,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { mockNetworkStats, mockAgents, mockScanResults } from '@/lib/mock-data';
+import { ScanResult } from '@/lib/types';
+
+const presets = [
+  { label: 'Web3 Trading Bot', icon: '🤖' },
+  { label: 'LLM Instance', icon: '🧠' },
+  { label: 'Enterprise AI', icon: '🏢' },
+];
+
+export default function ScannerPage() {
+  const [scanInput, setScanInput] = useState('');
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
+  const [scanResult, setScanResult] = useState<ScanResult | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleScan = async () => {
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    // Simulate scan result
+    setScanResult(mockScanResults['agent-001']);
+    setIsLoading(false);
+  };
+
+  const getRiskColor = (riskLevel: string) => {
+    const colors: Record<string, string> = {
+      critical: 'text-destructive bg-destructive/10',
+      high: 'text-red-600 bg-red-50 dark:bg-red-950',
+      medium: 'text-yellow-600 bg-yellow-50 dark:bg-yellow-950',
+      low: 'text-green-600 bg-green-50 dark:bg-green-950',
+      safe: 'text-emerald-600 bg-emerald-50 dark:bg-emerald-950',
+    };
+    return colors[riskLevel] || colors.medium;
+  };
+
+  const getTrustColor = (score: number) => {
+    if (score >= 85) return 'text-emerald-600';
+    if (score >= 70) return 'text-blue-600';
+    if (score >= 50) return 'text-yellow-600';
+    return 'text-red-600';
+  };
+
+  return (
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      {/* Network Stats */}
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Active Scans/sec
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold flex items-center gap-2">
+              <Activity className="w-5 h-5 text-accent" />
+              {mockNetworkStats.activeScansPerSec.toLocaleString()}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Certified Agents
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold flex items-center gap-2">
+              <CheckCircle2 className="w-5 h-5 text-green-600" />
+              {mockNetworkStats.certifiedAgents.toLocaleString()}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Security Incidents (24h)
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold flex items-center gap-2">
+              <AlertCircle className="w-5 h-5 text-yellow-600" />
+              {mockNetworkStats.securityIncidentsReported24h}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm font-medium text-muted-foreground">
+              Protocol Status
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-lg font-bold">
+              <span className="inline-block w-2 h-2 rounded-full bg-green-600 mr-2"></span>
+              Healthy
+            </div>
+          </CardContent>
+        </Card>
       </div>
-    </main>
-  )
+
+      {/* Scanner Form */}
+      <Card className="mb-8">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Shield className="w-5 h-5" />
+            Verify an Agent
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          {/* Input */}
+          <div className="flex gap-2">
+            <Input
+              placeholder="Enter contract address, API endpoint, or agent ID..."
+              value={scanInput}
+              onChange={(e) => setScanInput(e.target.value)}
+              className="flex-1"
+            />
+            <Button
+              onClick={handleScan}
+              disabled={!scanInput && !selectedPreset || isLoading}
+              className="px-8"
+            >
+              {isLoading ? 'Scanning...' : 'Scan'}
+            </Button>
+          </div>
+
+          {/* Presets */}
+          <div>
+            <p className="text-sm font-medium mb-3">Quick Presets:</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              {presets.map((preset) => (
+                <Button
+                  key={preset.label}
+                  variant={
+                    selectedPreset === preset.label ? 'default' : 'outline'
+                  }
+                  className="justify-start"
+                  onClick={() => {
+                    setSelectedPreset(preset.label);
+                    setScanInput(preset.label);
+                  }}
+                >
+                  <span className="mr-2">{preset.icon}</span>
+                  {preset.label}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Scan Result */}
+      {scanResult && (
+        <div className="space-y-6">
+          <Card className="border-l-4 border-l-primary">
+            <CardHeader>
+              <div className="flex items-start justify-between">
+                <div>
+                  <CardTitle>{scanResult.agentName}</CardTitle>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Scanned at {new Date(scanResult.timestamp).toLocaleString()}
+                  </p>
+                </div>
+                <div className="text-right">
+                  <div
+                    className={`text-4xl font-bold ${getTrustColor(scanResult.trustScore)}`}
+                  >
+                    {scanResult.trustScore}
+                  </div>
+                  <p className="text-sm text-muted-foreground">Trust Score</p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Risk Level */}
+              <div>
+                <p className="text-sm font-medium mb-2">Risk Level</p>
+                <div
+                  className={`inline-block px-3 py-1 rounded-full ${getRiskColor(scanResult.riskLevel)}`}
+                >
+                  <span className="font-medium capitalize">
+                    {scanResult.riskLevel}
+                  </span>
+                </div>
+              </div>
+
+              {/* Three Pillars */}
+              <div>
+                <p className="text-sm font-medium mb-3">Security Assessment</p>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  {Object.entries(scanResult.pillars).map(([key, pillar]) => (
+                    <div
+                      key={key}
+                      className="border rounded-lg p-4 bg-card/50"
+                    >
+                      <div className="flex items-start justify-between mb-2">
+                        <h4 className="font-medium capitalize">
+                          {key.replace(/([A-Z])/g, ' $1').trim()}
+                        </h4>
+                        <div
+                          className={`text-xl font-bold ${getTrustColor(pillar.score)}`}
+                        >
+                          {pillar.score}
+                        </div>
+                      </div>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        Status: {pillar.status}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {pillar.details}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Summary */}
+              <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                <p className="text-sm">
+                  <span className="font-medium">Summary: </span>
+                  {scanResult.summary}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+    </div>
+  );
 }
