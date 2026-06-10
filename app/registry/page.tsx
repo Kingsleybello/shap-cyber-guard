@@ -88,8 +88,18 @@ export default function RegistryPage() {
                       {getTypeBadge(agent.type)}
                     </p>
                     {agent.onChainAddress && (
-                      <p className="text-xs text-muted-foreground font-mono">
-                        {agent.onChainAddress}
+                      <p className="text-xs text-muted-foreground font-mono mb-1">
+                        Address: {agent.onChainAddress}
+                      </p>
+                    )}
+                    {(agent as any).enterpriseId && (
+                      <p className="text-xs text-muted-foreground font-mono mb-1">
+                        Enterprise ID: {(agent as any).enterpriseId}
+                      </p>
+                    )}
+                    {(agent as any).apiEndpoint && (
+                      <p className="text-xs text-muted-foreground font-mono mb-1">
+                        Endpoint: {(agent as any).apiEndpoint}
                       </p>
                     )}
                   </div>

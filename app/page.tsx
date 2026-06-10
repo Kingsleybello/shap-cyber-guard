@@ -14,6 +14,7 @@ import { Input } from '@/components/ui/input';
 import { mockNetworkStats, mockAgents, mockScanResults } from '@/lib/mock-data';
 import { ScanResult } from '@/lib/types';
 import { TrustScoreChart } from '@/components/charts/ChartComponents';
+import { LoadingSpinner, PageTransition } from '@/components/ui/loading';
 
 const presets = [
   { label: 'Web3 Trading Bot', icon: '🤖' },
@@ -55,8 +56,27 @@ export default function ScannerPage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-      {/* Network Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <PageTransition>
+        {/* Hero Section */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+              <Shield className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                SHAP Cyber Guard
+              </h1>
+              <p className="text-muted-foreground mt-1">Global AI Trust Infrastructure</p>
+            </div>
+          </div>
+          <p className="text-muted-foreground max-w-2xl">
+            Verify autonomous agents with cryptographic reputation, compliance credentials, and real-time security monitoring.
+          </p>
+        </div>
+
+        {/* Network Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         <Card>
           <CardHeader className="pb-3">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -247,6 +267,7 @@ export default function ScannerPage() {
           </Card>
         </div>
       )}
+      </PageTransition>
     </div>
   );
 }
