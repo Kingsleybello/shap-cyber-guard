@@ -1,6 +1,7 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
+import { Toaster } from 'sonner'
 import { Header } from '@/components/layout/Header'
 import './globals.css'
 
@@ -28,6 +29,7 @@ export default function RootLayout({
         <main className="min-h-[calc(100vh-64px)]">
           {children}
         </main>
+        <Toaster />
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

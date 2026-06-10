@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 import { authClient } from '@/lib/auth-client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -35,6 +36,12 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
     if (error) {
       setError(error.message ?? 'Something went wrong')
       return
+    }
+
+    if (isSignUp) {
+      toast.success('Account created successfully! Welcome to SHAP')
+    } else {
+      toast.success('Signed in successfully!')
     }
 
     router.push('/')
